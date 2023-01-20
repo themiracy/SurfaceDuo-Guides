@@ -136,6 +136,10 @@ _Note: below source code is heavily inspired from https://github.com/ms-iot/iot-
 
 ## Generate a new System Integrity Policy
 
+### Creating the SiPolicy XML file
+
+Using below's template, fill in the missing Certificate Thumbprints using your own generated certificates from earlier. Once donem save the entire file as ```SiPolicy.xml```.
+
 _Note: Please see "C:\Windows\schemas\CodeIntegrity\ExamplePolicies\DefaultWindows_Enforced.xml" for comparisons_
 
 ```xml
@@ -418,6 +422,18 @@ _Note: Please see "C:\Windows\schemas\CodeIntegrity\ExamplePolicies\DefaultWindo
     </Setting>
   </Settings>
 </SiPolicy>
+```
+
+### Convert SiPolicy.xml to SiPolicy.p7b
+
+```pwsh
+ConvertFrom-CIPolicy -XmlFilePath ".\SiPolicy.xml" -BinaryFilePath ".\SiPolicy.bin"
+
+# Use sha1 thumbprint to identify the cert for signing. Cert must be available in CurrentUser store (from smartcard or local machine)
+$signcerttp = (Get-PfxCertificate -FilePath ".\OEMA0-KEK.cer").Thumbprint
+
+& "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x86\signtool.exe" "sign" "-v" "/s" "my" "/sha1" "$signcerttp" "/p7" "." "/p7co" "1.3.6.1.4.1.311.79.1" "/fd" "sha256" ".\SiPolicy.bin"
+Copy-Item -Path ".\SiPolicy.bin.p7" -Destination ".\SiPolicy.p7b" -Force
 ```
 
 ## Generate a new Self-Signed Driver Enabler package
