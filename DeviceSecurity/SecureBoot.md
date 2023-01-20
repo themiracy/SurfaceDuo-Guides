@@ -479,7 +479,7 @@ Copy-Item -Path ".\SiPolicy.bin.p7" -Destination ".\SiPolicy.p7b" -Force
 
 ## Generate a new Self-Signed Driver Enabler package
 
-Self-Signed Driver Enabler ([SSDE](https://github.com/valinet/ssde) for short) is a driver written by Vallinet designed to help maintain Custom Kernel Policy Signer Licensing persistence in the Operating System. If you understood nothing from this sentence, _this is normal_, but just follow along. (For people curious, you can read the excellent write up by Geoff Chappell on the matter: [Licensed Driver Signing in Windows 10](https://www.geoffchappell.com/notes/windows/license/customkernelsigners.htm))
+Self-Signed Driver Enabler ([SSDE](https://github.com/valinet/ssde) for short) is a driver written by @Valinet designed to help maintain Custom Kernel Policy Signer Licensing persistence in the Operating System. If you understood nothing from this sentence, _this is normal_, but just follow along. (For people curious, you can read the excellent write up by Geoff Chappell on the matter: [Licensed Driver Signing in Windows 10](https://www.geoffchappell.com/notes/windows/license/customkernelsigners.htm))
 
 In case you do not trust the binary in the Surface Duo Drivers package, feel free to rebuild it using the WDK of your choice. Just be aware the WDK must be of version 18362 if you want to run the driver on 18362 and may require [some api changes in regards to pool apis](https://learn.microsoft.com/en-us/windows-hardware/drivers/wdk-known-issues#issue-in-exallocatepoolzero-exallocatepoolquotazero-and-exallocatepoolpriorityzero-functions-fixed). Once built, replace the sys file (and only this file) in ```/components/ANYSOC/Support/Desktop/SUPPORT.DESKTOP.BASE/Signature/SSDE/ssde.sys```
 
