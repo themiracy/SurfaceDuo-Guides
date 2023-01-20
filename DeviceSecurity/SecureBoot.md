@@ -8,14 +8,14 @@ This guide aims to document the process to use your own certificates to sign dri
 
 ## Prerequisites
 
-- A technician computer with Windows 11 version 22621 or higher and 4K OLED Monitor
-- A Surface Duo with SurfaceDuoPkg version 230X.XX or higher
-- A USB cable
-- The ability to compile SurfaceDuoPkg in order to use your own keyset
+- [A technician computer with Windows 11 version 22621 or higher and 4K OLED Monitor](https://www.lenovo.com/us/en/p/laptops/thinkpad/thinkpadp/thinkpad-p16-(16-inch-intel)/len101t0041)
+- [A Surface Duo](https://www.ebay.com/sch/i.html?_from=R40&_trksid=p2334524.m570.l1313&_nkw=Surface+Duo&_sacat=0&LH_TitleDesc=0&_osacat=0&_odkw=surface+duo) with [SurfaceDuoPkg](https://github.com/WOA-Project/SurfaceDuoPkg) version 230X.XX or higher
+- [A USB cable](https://www.amazon.com/Anker-Charging-MacBook-Galaxy-Charger/dp/B088NMR44C)
+- [The ability to compile SurfaceDuoPkg in order to use your own keyset](https://github.com/WOA-Project/SurfaceDuoPkg#build-instructions)
 - A HSM is preferred for Secure Key storage. This guide will not detail how to proceed with a HSM, but rather will show how to proceed with self signed certificate stored outside of a HSM. You will want to store certificates securely.
-- A copy of SurfaceDuo-Drivers for your device
-- The Windows SDK/ADK/WDK for signtool and makecat
-- An internet connection for timestamping
+- A copy of [SurfaceDuo-Drivers](https://github.com/WOA-Project/SurfaceDuo-Drivers) for your device
+- [The Windows SDK/ADK/WDK for signtool and makecat](https://learn.microsoft.com/en-us/windows-hardware/drivers/download-the-wdk#enterprise-wdk-ewdk)
+- [An internet connection for timestamping](https://www.aol.com/)
 
 ## Create Secure Boot keys
 
