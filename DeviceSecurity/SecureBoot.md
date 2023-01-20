@@ -21,7 +21,7 @@ This guide aims to document the process to use your own certificates to sign dri
 
 Here we'll generate self signed certificate on our local machine. You _definitely_ want to use an HSM for security reasons. (You may want a SmartCard PKI Card for example)
 
-Open powershell on your compute and run the following commands, replacing things whenever needed:
+Open powershell on your computer and run the following commands, replacing things whenever needed:
 
 _Note: below source code is heavily inspired from https://github.com/ms-iot/iot-adk-addonkit/blob/17763-v7/Tools/IoTCoreImaging/IoTSecurity.ps1_
 
