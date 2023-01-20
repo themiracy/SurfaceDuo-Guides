@@ -120,6 +120,20 @@ _Note: below source code is heavily inspired from https://github.com/ms-iot/iot-
 
 ## Embed the new keys into your SurfaceDuoPkg compile
 
+### KEK
+
+[KEK Byte Array Code Location](https://github.com/WOA-Project/SurfaceDuoPkg/blob/6ed3fb88b36ad8e5ae80901fdd328c98c5c5c748/Platforms/SurfaceDuoFamilyPkg/Library/SecureBootKeyStoreLib/MsSecureBootDefaultVars.h#L17-L203)
+
+### DB
+
+[DB Byte Array Code Location](https://github.com/WOA-Project/SurfaceDuoPkg/blob/6ed3fb88b36ad8e5ae80901fdd328c98c5c5c748/Platforms/SurfaceDuoFamilyPkg/Library/SecureBootKeyStoreLib/MsSecureBootDefaultVars.h#L17-L203)
+
+### PK
+
+![image](https://user-images.githubusercontent.com/3755345/213808143-818c6148-14c1-4304-918a-fc993ea3d932.png)
+
+[PK Byte Array Code Location](https://github.com/WOA-Project/SurfaceDuoPkg/blob/6ed3fb88b36ad8e5ae80901fdd328c98c5c5c748/Platforms/SurfaceDuoFamilyPkg/Library/SecureBootKeyStoreLib/SecureBootKeyStoreLib.c#L25-L114)
+
 ## Generate a new System Integrity Policy
 
 _Note: Please see "C:\Windows\schemas\CodeIntegrity\ExamplePolicies\DefaultWindows_Enforced.xml" for comparisons_
