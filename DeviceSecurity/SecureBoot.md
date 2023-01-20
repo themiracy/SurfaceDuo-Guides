@@ -356,6 +356,9 @@ _Note: Please see "C:\Windows\schemas\CodeIntegrity\ExamplePolicies\DefaultWindo
       <CertPublisher Value="Microsoft Corporation" />
       <FileAttribRef RuleID="ID_FILEATTRIB_REFRESH_POLICY" />
     </Signer>
+    <Signer ID="ID_SIGNER_S_1A_1_0_0" Name="OEMA0 KEK Secure Boot">
+      <CertRoot Type="TBS" Value="<YOUR CERTFICIATE THUMBPRINT GOES HERE>" />
+    </Signer>
     <Signer ID="ID_SIGNER_S_19_1_0_0" Name="OEMA0 KEK Secure Boot">
       <CertRoot Type="TBS" Value="<YOUR CERTFICIATE THUMBPRINT GOES HERE>" />
     </Signer>
