@@ -179,7 +179,7 @@ _TIP: Use the built in Azure DevOps CI to save time!_
 
 ### Creating the SiPolicy XML file
 
-Using below's template, fill in the missing Certificate Thumbprints using your own generated certificates from earlier. Once donem save the entire file as ```SiPolicy.xml```.
+Using below's template, fill in the missing Certificate Thumbprints using your own generated certificates from earlier. Once done save the entire file as ```SiPolicy.xml```.
 
 _Note: Please see "C:\Windows\schemas\CodeIntegrity\ExamplePolicies\DefaultWindows_Enforced.xml" for comparisons_
 
@@ -478,6 +478,12 @@ Copy-Item -Path ".\SiPolicy.bin.p7" -Destination ".\SiPolicy.p7b" -Force
 ```
 
 ## Generate a new Self-Signed Driver Enabler package
+
+Self-Signed Driver Enabler ([SSDE](https://github.com/valinet/ssde) for short) is a driver written by Vallinet designed to help maintain Custom Kernel Policy Signer Licensing persistence in the Operating System. If you understood nothing from this sentence, _this is normal_, but just follow along. (For people curious, you can read the excellent write up by Geoff Chappell on the matter: [Licensed Driver Signing in Windows 10](https://www.geoffchappell.com/notes/windows/license/customkernelsigners.htm))
+
+In case you do not trust the binary in the Surface Duo Drivers package, feel free to rebuild it using the WDK of your choice. Just be aware the WDK must be of version 18362 if you want to run the driver on 18362 and may require [some api changes in regards to pool apis](https://learn.microsoft.com/en-us/windows-hardware/drivers/wdk-known-issues#issue-in-exallocatepoolzero-exallocatepoolquotazero-and-exallocatepoolpriorityzero-functions-fixed). Once built, replace the sys file (and only this file) in ```/components/ANYSOC/Support/Desktop/SUPPORT.DESKTOP.BASE/Signature/SSDE/ssde.sys```
+
+Navigate to ```/components/ANYSOC/Support/Desktop/SUPPORT.DESKTOP.BASE/Signature/SSDE/``` in the driver package you downloaded, replace the existing SiPolicy.p7b file with the one you just built on your own.
 
 ## Resigning Driver binaries for Kernel Mode use (KMCI)
 
