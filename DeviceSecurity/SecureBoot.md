@@ -120,23 +120,60 @@ _Note: below source code is heavily inspired from https://github.com/ms-iot/iot-
 
 ## Embed the new keys into your SurfaceDuoPkg compile
 
-### KEK
+### Generate Certificate Lists
+
+```pwsh
+    Publish-Status "DB list : "
+    $db
+    Import-Module secureboot
+    # Get current time in format "yyyy-MM-ddTHH':'mm':'ss'Z'"
+    $time = (Get-date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+
+    # DB
+    $objectFromFormat = (Format-SecureBootUEFI -Name db -SignatureOwner 77fa9abd-0359-4d32-bd60-28f4e78f784b -FormatWithCert -CertificateFilePath $db -SignableFilePath ".\db.bin" -Time $time -AppendWrite: $false)
+    & "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x86\signtool.exe" "sign" "-v" "/fd" "sha256" "/p7" "." "/p7co" "1.2.840.113549.1.7.1" "/p7ce" "DetachedSignedData" "/a" "/u" "1.3.6.1.4.1.311.79.2.1" "/sha1" "$keksigncerttp" ".\db.bin"
+    $objectFromFormat | Set-SecureBootUEFI -SignedFilePath ".\db.bin.p7" -OutputFilePath ".\SetVariable_db.bin" | Out-Null
+    Publish-Status "Key Exchange Keys : "
+    $kekcert
+
+    # KEK
+    $objectFromFormat = (Format-SecureBootUEFI -Name KEK -SignatureOwner 00000000-0000-0000-0000-000000000000 -FormatWithCert -CertificateFilePath $kekcert -SignableFilePath ".\kek.bin" -Time $time -AppendWrite: $false)
+    & "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x86\signtool.exe" "sign" "-v" "/fd" "sha256" "/p7" "." "/p7co" "1.2.840.113549.1.7.1" "/p7ce" "DetachedSignedData" "/a" "/sha1" ".p" ".\kek.bin"
+    $objectFromFormat | Set-SecureBootUEFI -SignedFilePath ".\kek.bin.p7" -OutputFilePath ".\SetVariable_kek.bin" | Out-Null
+
+    # PK
+    $objectFromFormat = (Format-SecureBootUEFI -Name PK -SignatureOwner 55555555-5555-5555-5555-555555555555 -FormatWithCert -CertificateFilePath $pkcert -SignableFilePath ".\pk.bin" -Time $time -AppendWrite: $false)
+    & "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x86\signtool.exe" "sign" "-v" "/fd" "sha256" "/p7" "." "/p7co" "1.2.840.113549.1.7.1" "/p7ce" "DetachedSignedData" "/a" "/sha1" "$pksigncerttp" ".\pk.bin"
+    $objectFromFormat | Set-SecureBootUEFI -SignedFilePath ".\pk.bin.p7" -OutputFilePath ".\SetVariable_pk.bin" | Out-Null
+```
+
+### Embed the new keys into the UEFI
+
+Now that we generated valid UEFI Certificate lists and signed them, we need to embed these files into the locations described in the following sections.
+
+#### KEK (kek.bin.p7)
 
 ![image](https://user-images.githubusercontent.com/3755345/213809796-b13d3620-b509-4b74-a0bb-788d4fd33f13.png)
 
 [KEK Byte Array Code Location](https://github.com/WOA-Project/SurfaceDuoPkg/blob/6ed3fb88b36ad8e5ae80901fdd328c98c5c5c748/Platforms/SurfaceDuoFamilyPkg/Library/SecureBootKeyStoreLib/MsSecureBootDefaultVars.h#L17-L203)
 
-### DB
+#### DB (db.bin.p7)
 
 ![image](https://user-images.githubusercontent.com/3755345/213809926-aa6fe964-7bd2-4f3e-9503-01616c57e325.png)
 
 [DB Byte Array Code Location](https://github.com/WOA-Project/SurfaceDuoPkg/blob/6ed3fb88b36ad8e5ae80901fdd328c98c5c5c748/Platforms/SurfaceDuoFamilyPkg/Library/SecureBootKeyStoreLib/MsSecureBootDefaultVars.h#L207-L403)
 
-### PK
+#### PK (pk.bin.p7)
 
 ![image](https://user-images.githubusercontent.com/3755345/213808143-818c6148-14c1-4304-918a-fc993ea3d932.png)
 
 [PK Byte Array Code Location](https://github.com/WOA-Project/SurfaceDuoPkg/blob/6ed3fb88b36ad8e5ae80901fdd328c98c5c5c748/Platforms/SurfaceDuoFamilyPkg/Library/SecureBootKeyStoreLib/SecureBootKeyStoreLib.c#L25-L114)
+
+#### Rebuilding
+
+Once done, recompile SurfaceDuoPkg as usual with your new changes.
+
+_TIP: Use the built in Azure DevOps CI to save time!_
 
 ## Generate a new System Integrity Policy
 
