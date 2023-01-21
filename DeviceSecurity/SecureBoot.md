@@ -191,9 +191,6 @@ _Note: Please see "C:\Windows\schemas\CodeIntegrity\ExamplePolicies\DefaultWindo
       <Option>Disabled:Script Enforcement</Option>
     </Rule>
     <Rule>
-      <Option>Enabled:UMCI</Option>
-    </Rule>
-    <Rule>
       <Option>Enabled:Inherit Default Policy</Option>
     </Rule>
     <Rule>
