@@ -112,3 +112,49 @@ adb pull /tmp/boot.img
 We're done! 🥳🎈
 
 <img width="531" alt="image" src="https://user-images.githubusercontent.com/29689637/222561203-7f2dc375-e500-4201-a538-8cd0ba6d7559.png">
+
+## Extracting and copying modem files (Carrier unlocked US AT&T)
+
+If you are using a US AT&T device that was carrier unlocked, you will see in the [Status update](https://github.com/WOA-Project/SurfaceDuo-Guides/blob/5756da9ba9d57fff4b776202b858cc07f7e3887e/Status.md) that modem files are required from the Android image. Note that the device MUST ALREADY BE UNLOCKED IN ANDROID for this to work. Following this guide, use: 
+
+```
+ls -al /dev/block/platform/soc/[the last line we took note of]/by-name/
+```
+
+To generate the list of partitions and identify partitions modemst1 and modemst2. Note these partition numbers and use the appropriate commands:
+
+```
+dd if=/dev/block/sdf2 of=/tmp/bootmodem_fs1
+dd if=/dev/block/sdf3 of=/tmp/bootmodem_fs2
+```
+
+Replacing sdf2/3 with the appropriate partitions. For my Surface Duo 1, the two image files are 2048 kb and 104 kb. The 104 kb file appears to be for the ESIM that is deactivated by AT&T in the US AT&T SD1. 
+
+Next, use:
+
+```
+adb pull /tmp/bootmodem_fs1
+adb pull /tmp/bootmodem_fs2
+```
+
+As above. Now, using the commands in the installation guide, we need to get into mass storage mode.
+
+```
+adb reboot bootloader
+adb push surfaceduo1-msc.tar /sdcard/
+adb shell "tar -xf /sdcard/surfaceduo1-msc.tar -C /sdcard --no-same-owner"
+adb shell "chmod +x /sdcard/msc.sh"
+adb shell "/sdcard/msc.sh"
+```
+
+Using the appropriate .tar file that you have from the installation process.
+
+Now find the directory \Windows\System32\DriverStore\FileRepository\qcremotefs8150_<random data here> - making sure to look in your mounted Surface Duo and not your desktop.
+  
+Once you find this folder, select the folder (within FileRepository), right click from your desktop computer, and select security, and give full permissions to "EVERYONE."
+  
+Now you can rename the bootmodem_fs1 and _fs2 files in this folder (note they have no extension - you can add .old), and then paste the bootmodem_fs1 and _fs2 files you pulled from Android, above, into this folder. 
+  
+You can go back to the folder and restore the permissions (deselect modify/write permissions). 
+  
+If you boot into Windows and you get a BSOD/GSOD, then try swapping which of the two files are labeled fs1 and fs2. For me, the larger (2048kb) file needed to be fs1. When you come back up in Windows, you should have access to the cellular modem. You may have to adjust APN settings in Windows. The error message saying that the device is Carrier Locked should no longer appear. 
